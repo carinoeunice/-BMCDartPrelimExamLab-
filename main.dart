@@ -1,0 +1,59 @@
+import 'dart:io';
+
+void main() {
+
+  const.double passingGradeThreshold = 60.0; 
+  const.double maxScore = 100.0;             
+  const.double assignmentWeight = 0.2;       
+  const.double midtermWeight = 0.3;          
+  const.double finalExamWeight = 0.5;        
+
+ 
+  stdout.write("Enter student's name: ");
+  String studentName = stdin.readLineSync() ?? "Unknown";
+
+  
+  double assignmentScore = getValidScore("Assignment", maxScore);
+  double midtermScore = getValidScore("Midterm", maxScore);
+  double finalExamScore = getValidScore("Final Exam", maxScore);
+
+  
+  
+  double finalGrade = (assignmentScore * assignmentWeight) +
+      (midtermScore * midtermWeight) +
+      (finalExamScore * finalExamWeight);
+
+  
+  String status = finalGrade >= passingGradeThreshold ? "Passed " : "Failed ";
+
+  
+  print("\n===== STUDENT GRADE REPORT =====");
+  print("Student Name   : $studentName");
+  print("Assignment     : ${assignmentScore.toStringAsFixed(1)}");
+  print("Midterm        : ${midtermScore.toStringAsFixed(1)}");
+  print("Final Exam     : ${finalExamScore.toStringAsFixed(1)}");
+  print("--------------------------------");
+  print("Final Grade    : ${finalGrade.toStringAsFixed(1)}");
+  print("Result         : $status");
+  print("================================");
+}
+
+
+double getValidScore(String examType, double maxScore) {
+  double? score;
+  while (true) {
+    try {
+      stdout.write("Enter $examType score (0 - $maxScore): ");
+      score = double.parse(stdin.readLineSync()!);
+
+      if (score < 0 || score > maxScore) {
+        print(" Error: $examType score must be between 0 and $maxScore.");
+      } else {
+        break; // valid input
+      }
+    } catch (e) {
+      print(" Error: Invalid input. Please enter numbers only.");
+    }
+  }
+  return score!;
+}
